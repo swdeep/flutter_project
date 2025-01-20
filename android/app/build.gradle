@@ -1,0 +1,92 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+
+configurations.configureEach {
+    resolutionStrategy {
+        eachDependency {
+            if ((requested.group == "org.jetbrains.kotlin") && (requested.name.startsWith("kotlin-stdlib"))) {
+                useVersion("1.9.20")
+            }
+        }
+    }
+}
+
+android {
+    compileSdk 34
+    namespace 'com.myapps.shortz'
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+
+        sourceCompatibility JavaVersion.VERSION_17
+
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    defaultConfig {
+        applicationId "com.myapps.shortz"
+        minSdkVersion 24
+        targetSdkVersion 34
+        multiDexEnabled true
+        versionCode 6
+        versionName '1.0.6'
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+
+    }
+    buildTypes {
+        release {
+
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug
+        }
+    }
+
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //Firebase
+    implementation platform('com.google.firebase:firebase-bom:33.0.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+
+}
