@@ -1,57 +1,56 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 
 class BubblyCamera {
-  static const MethodChannel _channel = const MethodChannel('bubbly_camera');
+  static const MethodChannel _channel = MethodChannel('bubbly_camera');
 
   static Future<String?> get platformVersion async {
     final String? version = await _channel.invokeMethod('getPlatformVersion');
     return version;
   }
 
-  static get showAleartDialog async {
+  static Future<void> get showAlertDialog async {
     await _channel.invokeMethod('showAlertDialog');
   }
 
-  static get startRecording async {
+  static Future<void> get startRecording async {
     await _channel.invokeMethod('start');
   }
 
-  static get pauseRecording async {
+  static Future<void> get pauseRecording async {
     await _channel.invokeMethod('pause');
   }
 
-  static get resumeRecording async {
+  static Future<void> get resumeRecording async {
     await _channel.invokeMethod('resume');
   }
 
-  static get stopRecording async {
+  static Future<void> get stopRecording async {
     await _channel.invokeMethod('stop');
   }
 
-  static get toggleCamera async {
+  static Future<void> get toggleCamera async {
     await _channel.invokeMethod('toggle');
   }
 
-  static get flashOnOff async {
+  static Future<void> get flashOnOff async {
     await _channel.invokeMethod('flash');
   }
 
-  static shareToInstagram(String text) async {
-    await _channel.invokeMethod('shareToInstagram', text);
+  static Future<void> shareToInstagram(String text) async {
+    await _channel.invokeMethod('shareToInstagram', {'text': text});
   }
 
-  static inAppPurchase(String productID) async {
-    await _channel.invokeMethod('in_app_purchase_id', productID);
+  static Future<void> inAppPurchase(String productID) async {
+    await _channel.invokeMethod('in_app_purchase_id', {'productID': productID});
   }
 
-  static saveImage(String path) async {
-    await _channel.invokeMethod('path', path);
+  static Future<void> saveImage(String path) async {
+    await _channel.invokeMethod('path', {'path': path});
   }
 
-  static mergeAudioVideo(String path) async {
-    await _channel.invokeMethod('merge_audio_video', path);
+  static Future<void> mergeAudioVideo(String path) async {
+    await _channel.invokeMethod('merge_audio_video', {'path': path});
   }
 
   static Future<bool> get cameraDispose async {
