@@ -9,7 +9,10 @@ void main() {
 
   setUp(() {
     channel.setMethodCallHandler((MethodCall methodCall) async {
-      return '42';
+      if (methodCall.method == 'getPlatformVersion') {
+        return '42';
+      }
+      return null;
     });
   });
 
